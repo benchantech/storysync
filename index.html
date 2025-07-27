@@ -22,19 +22,22 @@
       background-color: #f8f9fa;
       font-family: Arial, sans-serif;
     }
+    #storySync {
+      width: 100%;
+      max-width: 500px;
+      padding: 0 16px;
+    }
     #storyTeller {
-      display: block;
-      margin: 0 auto;
-      padding: 16px 32px;
-      font-size: 1.2em;
+      display: none;
+      width: 100%;
+      padding: 20px;
+      font-size: 1.4em;
       background-color: #007BFF;
       color: white;
       border: none;
       border-radius: 8px;
       text-align: center;
       cursor: pointer;
-      width: 80%;
-      max-width: 300px;
     }
     #storyTeller:active {
       background-color: #0056b3;
@@ -45,6 +48,7 @@
       text-align: center;
       font-size: 0.8rem;
       color: #333;
+      width: 100%;
     }
     footer p {
       margin: 4px 0;
@@ -61,15 +65,33 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-  
     gtag('config', 'G-25PDJ8VRNT');
   </script>
 </head>
 <body>
-  <button id="storyTeller" href="shortcuts://run-shortcut?name=Storyteller&input=What%20was%20your%20first%20job%3F">Ask Me a Question</button>
+  <a id="storySync">
+    <button id="storyTeller">Ask Me a Question</button>
+  </a>
   <footer>
     <p>StorySync by <strong>Ben Chan Tech LLC</strong> — <a href="https://benchantech.com" target="_blank">benchantech.com</a></p>
     <p style="font-size:0.7rem;">Licensed CC BY 4.0 — Attribution required.</p>
   </footer>
+
+  <script>
+    async function setRandomQuestion() {
+      try {
+        const res = await fetch('/assets/json/questions.json');
+        const data = await res.json();
+        const questions = data.questions;
+        const randomQ = questions[Math.floor(Math.random() * questions.length)];
+        const encodedQ = encodeURIComponent(randomQ);
+        const link = `shortcuts://run-shortcut?name=Storyteller&input=${encodedQ}`;
+        document.getElementById('storySync').setAttribute('href', link);
+      } catch (err) {
+        console.error('Error fetching questions:', err);
+      }
+    }
+    setRandomQuestion();
+  </script>
 </body>
 </html>
