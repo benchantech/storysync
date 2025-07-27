@@ -23,12 +23,13 @@
       font-family: Arial, sans-serif;
     }
     #storySync {
+      display: none;
       width: 100%;
       max-width: 500px;
       padding: 0 16px;
     }
     #storyTeller {
-      display: none;
+      display: block;
       width: 100%;
       padding: 20px;
       font-size: 1.4em;
@@ -87,6 +88,7 @@
         const encodedQ = encodeURIComponent(randomQ);
         const link = `shortcuts://run-shortcut?name=Storyteller&input=${encodedQ}`;
         document.getElementById('storySync').setAttribute('href', link);
+        document.getElementById('storySync').style.display = 'block';
       } catch (err) {
         console.error('Error fetching questions:', err);
       }
